@@ -176,7 +176,9 @@ Aşağıdaki bölüm ve ders listesi, paylaşılan indeks dosyasına göre günc
 
 ## Kaynak
 
-_Udemy eğitim linki henüz eklenmedi. Yayınlandığında bu bölüme eklenecek._
+## Eğitim Linki
+
+- [Udemy - Java ile Yapay Zeka Mühendisliği](https://www.udemy.com/course/Java-ile-Yapay-Zeka-Muhendisligi/)
 
 ## Lisans
 
