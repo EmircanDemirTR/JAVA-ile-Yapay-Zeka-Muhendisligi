@@ -1,0 +1,99 @@
+# Spring AI Demo Uygulamasi — Ana Yapilandirma Dosyasi
+
+spring:
+  application:
+    name: spring-ai-demo
+
+  # --- VARSAYILAN PROFIL ---
+  profiles:
+    default: openai
+
+  servlet:
+    multipart:
+      max-file-size: 25MB       # Tek dosya limiti — gorsel + ses icin yeterli
+      max-request-size: 25MB    # Toplam istek limiti
+
+  cache:
+    type: none
+
+  # VERITABANI YAPILANDIRMASI
+  # ==================================================================
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/vectordb
+    username: postgres
+    password: ${DB_PASSWORD:postgres} # Cevresel degisken veya varsayilan
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update # Sema otomatik guncelleme (gelistirme icin)
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false # SQL loglarini kapat (production icin)
+
+  
+  # SPRING AI GENEL AYARLARI
+  # ==================================================================
+  ai:
+    # Retry ve timeout ayarlari (tum saglayicilar icin gecerli)
+    retry:
+      max-attempts: 3 # Maksimum yeniden deneme
+      backoff:
+        initial-interval: 1000ms # Ilk bekleme suresi
+        multiplier: 2 # Coklu artis (1s, 2s, 4s)
+        max-interval: 10000ms # Maksimum bekleme
+
+# SUNUCU AYARLARI
+# ==================================================================
+server:
+  port: 8080
+  servlet:
+    context-path: / # Root context
+
+# LOGLAMA AYARLARI
+# ==================================================================
+logging:
+  level:
+    root: INFO
+    com.javaai: DEBUG # Uygulama loglari
+    org.springframework.ai: DEBUG # Spring AI loglari
+    org.springframework.retry: DEBUG # Retry loglari
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+
+# RESILIENCE4J
+# ==================================================================
+resilience4j:
+  circuitbreaker:
+    instances:
+      b15-ai-service:
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 30s
+        permitted-number-of-calls-in-half-open-state: 3
+  retry:
+    instances:
+      b15-ai-service:
+        max-attempts: 3
+        wait-duration: 1s
+        exponential-backoff-multiplier: 2
+
+# ==================================================================
+# ACTUATOR (Izleme ve Yonetim)
+# ==================================================================
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when_authorized
+  metrics:
+    tags:
+      application: spring-ai-demo
+  tracing:
+    sampling:
+      probability: 1.0

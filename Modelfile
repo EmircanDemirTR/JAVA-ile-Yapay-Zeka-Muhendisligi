@@ -1,0 +1,8 @@
+FROM ./Mistral-7B-Instruct-v0.3-Q4_K_M.gguf
+PARAMETER temperature 0.7
+PARAMETER top_p 0.9
+PARAMETER top_k 40
+PARAMETER repeat_penalty 1.1
+PARAMETER num_ctx 8192
+PARAMETER num_predict 1024
+SYSTEM "Sen yardimci bir yapay zeka asistanisin. Soruları acik ve Turkce olarak yanitla."

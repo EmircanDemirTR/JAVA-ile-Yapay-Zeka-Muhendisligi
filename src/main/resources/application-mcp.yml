@@ -1,0 +1,18 @@
+spring:
+  ai:
+    mcp:
+      client:
+        type: sync
+        stdio:
+          connections:
+            filesystem:
+              command: npx.cmd
+              args:
+                - "-y"
+                - "@modelcontextprotocol/server-filesystem"
+                - "C:/Users/emirc/Desktop/JavaAI"
+            everything:
+              command: npx.cmd
+              args:
+                - "-y"
+                - "@modelcontextprotocol/server-everything"

@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <artifactId>java-ai-engineering</artifactId>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>
+              <artifactId>lombok</artifactId>
+              <groupId>org.projectlombok</groupId>
+            </exclude>
+          </excludes>
+          <mainClass>com.javaai.JavaAiApplication</mainClass>
+        </configuration>
+        <groupId>org.springframework.boot</groupId>
+      </plugin>
+
+      <!-- Maven Compiler Plugin — JDK 25, preview features -->
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <annotationProcessorPaths>
+            <path>
+              <artifactId>lombok</artifactId>
+              <groupId>org.projectlombok</groupId>
+            </path>
+          </annotationProcessorPaths>
+          <compilerArgs>
+            <!-- JDK 25 preview ozelliklerini etkinlestir -->
+            <arg>--enable-preview</arg>
+          </compilerArgs>
+          <release>${java.version}</release>
+        </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+      </plugin>
+
+      <!-- Maven Resources Plugin — kaynak dosyalari kopyalama ve filtreleme -->
+      <!-- Spring Boot 4.0.x + maven-resources-plugin 3.3.x uyumluluk duzeltmesi -->
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <configuration>
+          <!-- .properties dosyalari icin encoding (Maven 3.4+ zorunlu) -->
+          <propertiesEncoding>UTF-8</propertiesEncoding>
+        </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+      </plugin>
+
+      <!-- Maven Surefire Plugin — test calistirma, preview features -->
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <argLine>--enable-preview</argLine>
+        </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+      </plugin>
+    </plugins>
+  </build>
+
+
+  <!-- ===================================================== -->
+  <!-- PROJECT COORDINATES                                   -->
+  <!-- ===================================================== -->
+  <dependencies>
+
+
+    <!-- Web starter — REST API, embedded Tomcat -->
+    <dependency>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+
+    <!-- WebFlux — SSE streaming icin reactive support -->
+    <dependency>
+      <artifactId>spring-boot-starter-webflux</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+
+    <!-- SpringDoc OpenAPI — Swagger UI ve API dokumantasyonu -->
+    <dependency>
+      <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+      <groupId>org.springdoc</groupId>
+      <version>${springdoc.version}</version>
+    </dependency>
+
+    <!-- JPA — veritabani islemleri, JdbcTemplate dahil -->
+    <dependency>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+
+    <!-- PostgreSQL JDBC driver -->
+    <dependency>
+      <artifactId>postgresql</artifactId>
+      <groupId>org.postgresql</groupId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <!-- Lombok — boilerplate kod azaltma: @Data, @Builder, @Slf4j -->
+    <dependency>
+      <artifactId>lombok</artifactId>
+      <groupId>org.projectlombok</groupId>
+      <optional>true</optional>
+    </dependency>
+
+    <!-- OpenAI entegrasyonu  -->
+    <dependency>
+      <artifactId>spring-ai-starter-model-openai</artifactId>
+      <groupId>org.springframework.ai</groupId>
+    </dependency>
+
+    <!-- Ollama entegrasyonu -->
+    <dependency>
+      <artifactId>spring-ai-starter-model-ollama</artifactId>
+      <groupId>org.springframework.ai</groupId>
+    </dependency>
+
+    <!-- Anthropic entegrasyonu  -->
+    <dependency>
+      <artifactId>spring-ai-starter-model-anthropic</artifactId>
+      <groupId>org.springframework.ai</groupId>
+    </dependency>
+
+
+    <!-- SPRING AI — MCP                            -->
+
+    <!-- MCP Client — harici MCP server'lara baglanma -->
+    <dependency>
+      <artifactId>spring-ai-starter-mcp-client</artifactId>
+      <groupId>org.springframework.ai</groupId>
+    </dependency>
+
+    <!-- MCP Server — kendi MCP server'inizi olusturma  -->
+    <dependency>
+      <artifactId>spring-ai-starter-mcp-server</artifactId>
+      <groupId>org.springframework.ai</groupId>
+    </dependency>
+
+
+    <!-- SPRING AI — VECTOR STORE            -->
+
+    <!-- pgvector — PostgreSQL tabanli vektor deposu -->
+    <dependency>
+      <artifactId>spring-ai-starter-vector-store-pgvector</artifactId>
+      <groupId>org.springframework.ai</groupId>
+    </dependency>
+
+    <!-- ChromaDB — hafif vektor veritabani  -->
+    <dependency>
+      <artifactId>spring-ai-starter-vector-store-chroma</artifactId>
+      <groupId>org.springframework.ai</groupId>
+    </dependency>
+
+    <!-- PDF okuyucu — PDF dosyalarindan dokuman cikarma -->
+    <dependency>
+      <artifactId>spring-ai-pdf-document-reader</artifactId>
+      <groupId>org.springframework.ai</groupId>
+    </dependency>
+
+    <!-- Tika okuyucu — Word, HTML, vb. formatlari destekler  -->
+    <dependency>
+      <artifactId>spring-ai-tika-document-reader</artifactId>
+      <groupId>org.springframework.ai</groupId>
+    </dependency>
+
+    <!-- SPRING AI — RAG VE ADVISOR                -->
+
+    <!-- VectorStore tabanli QuestionAnswerAdvisor -->
+    <dependency>
+      <artifactId>spring-ai-advisors-vector-store</artifactId>
+      <groupId>org.springframework.ai</groupId>
+    </dependency>
+
+    <!-- Modular RAG: RetrievalAugmentationAdvisor, QueryTransformer, DocumentPostProcessor -->
+    <dependency>
+      <artifactId>spring-ai-rag</artifactId>
+      <groupId>org.springframework.ai</groupId>
+    </dependency>
+
+    <!-- JDBC Chat Memory — veritabani tabanli kalici sohbet bellegi -->
+    <dependency>
+      <artifactId>spring-ai-starter-model-chat-memory-repository-jdbc</artifactId>
+      <groupId>org.springframework.ai</groupId>
+    </dependency>
+
+    <!-- Bucket4j — token bucket algoritmasi ile rate limiting  -->
+    <dependency>
+      <artifactId>bucket4j-core</artifactId>
+      <groupId>com.bucket4j</groupId>
+      <version>${bucket4j.version}</version>
+    </dependency>
+
+    <!-- Resilience4j — Circuit Breaker, Retry, Bulkhead -->
+    <dependency>
+      <artifactId>resilience4j-spring-boot3</artifactId>
+      <groupId>io.github.resilience4j</groupId>
+      <version>${resilience4j.version}</version>
+    </dependency>
+
+    <dependency>
+      <artifactId>spring-retry</artifactId>
+      <groupId>org.springframework.retry</groupId>
+      <version>2.0.12</version>
+    </dependency>
+
+    <!-- AspectJ — Spring Retry icin gerekli AspectJ destegi -->
+    <dependency>
+      <artifactId>spring-boot-starter-aspectj</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+
+    <!-- Spring Cache abstraction — @Cacheable, @CacheEvict  -->
+    <dependency>
+      <artifactId>spring-boot-starter-cache</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+
+    <!-- Caffeine — yuksek performansli in-memory cache provider -->
+    <dependency>
+      <artifactId>caffeine</artifactId>
+      <groupId>com.github.ben-manes.caffeine</groupId>
+    </dependency>
+
+    <!-- Actuator — health check, metrics, tracing endpoint'leri  -->
+    <dependency>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+
+    <!-- Micrometer Prometheus — Grafana ile metrik gorsellestirme  -->
+    <dependency>
+      <artifactId>micrometer-registry-prometheus</artifactId>
+      <groupId>io.micrometer</groupId>
+    </dependency>
+
+    <!-- Distributed Tracing — Brave bridge ile trace context  -->
+    <dependency>
+      <artifactId>micrometer-tracing-bridge-brave</artifactId>
+      <groupId>io.micrometer</groupId>
+    </dependency>
+
+
+  </dependencies>
+  <dependencyManagement>
+    <dependencies>
+      <!-- Spring AI BOM — tum Spring AI modulleri icin versiyon yonetimi -->
+      <dependency>
+        <artifactId>spring-ai-bom</artifactId>
+        <groupId>org.springframework.ai</groupId>
+        <scope>import</scope>
+        <type>pom</type>
+        <version>${spring-ai.version}</version>
+      </dependency>
+
+      <!-- TestContainers BOM — tum TestContainers modulleri icin versiyon yonetimi -->
+      <dependency>
+        <artifactId>testcontainers-bom</artifactId>
+        <groupId>org.testcontainers</groupId>
+        <scope>import</scope>
+        <type>pom</type>
+        <version>${testcontainers.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <description>
+    Java ile Yapay Zeka Muhendisligi: Spring AI, RAG ve LLM - Udemy Kursu.
+    Spring Boot 4.0.2, Spring AI 2.0.0-M2, JDK 25.
+  </description>
+  <groupId>com.javaai</groupId>
+
+  <modelVersion>4.0.0</modelVersion>
+  <name>Java AI Engineering</name>
+
+
+  <packaging>jar</packaging>
+
+
+  <parent>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <groupId>org.springframework.boot</groupId>
+    <relativePath/>
+    <version>4.0.1</version>
+  </parent>
+
+  <pluginRepositories>
+    <!-- Spring Milestones — plugin'ler icin milestone repository -->
+    <pluginRepository>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <url>https://repo.spring.io/milestone</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+
+  <properties>
+    <bucket4j.version>8.10.1</bucket4j.version>
+    <java.version>25</java.version>
+    <mcp-sdk.version>0.17.2</mcp-sdk.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <resilience4j.version>2.2.0</resilience4j.version>
+    <spring-ai.version>2.0.0-M2</spring-ai.version>
+    <springdoc.version>3.0.1</springdoc.version>
+  </properties>
+
+
+  <repositories>
+    <repository>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <url>https://repo.spring.io/milestone</url>
+    </repository>
+  </repositories>
+
+  <version>1.0.0</version>
+
+</project>

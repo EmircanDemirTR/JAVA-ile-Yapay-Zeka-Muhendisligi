@@ -1,0 +1,53 @@
+# Spring AI Demo — OpenAI Profil Yapilandirmasi
+# Aktivasyon: --spring.profiles.active=openai
+spring:
+  autoconfigure:
+    exclude:
+      # --- Ollama (TUM auto-config'ler) ---
+      - org.springframework.ai.model.ollama.autoconfigure.OllamaApiAutoConfiguration
+      - org.springframework.ai.model.ollama.autoconfigure.OllamaChatAutoConfiguration
+      - org.springframework.ai.model.ollama.autoconfigure.OllamaEmbeddingAutoConfiguration
+      # --- Anthropic (TUM auto-config'ler) ---
+      - org.springframework.ai.model.anthropic.autoconfigure.AnthropicChatAutoConfiguration
+      # --- Vector Store (B9'a kadar gerekmiyor) ---
+      - org.springframework.ai.vectorstore.pgvector.autoconfigure.PgVectorStoreAutoConfiguration
+      - org.springframework.ai.vectorstore.chroma.autoconfigure.ChromaVectorStoreAutoConfiguration
+      # --- Chat Memory JDBC (B12'ye kadar gerekmiyor) ---
+      - org.springframework.ai.model.chat.memory.repository.jdbc.autoconfigure.JdbcChatMemoryRepositoryAutoConfiguration
+      # --- MCP (B7 mock yaklasim kullandigi icin auto-config gerekmiyor) ---
+      - org.springframework.ai.mcp.client.common.autoconfigure.McpClientAutoConfiguration
+      - org.springframework.ai.mcp.server.common.autoconfigure.McpServerAutoConfiguration
+
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+
+      chat:
+        options:
+          model: gpt-4o
+          temperature: 0.7
+          max-tokens: 2000
+
+      # --- EMBEDDING MODEL OPSIYONLARI  ---
+      embedding:
+        options:
+          model: text-embedding-3-small
+
+      # --- GORSEL URETIMI OPSIYONLARI  ---
+      image:
+        options:
+          model: dall-e-3      # DALL-E 3 gorsel uretim modeli
+          size: 1024x1024      # Varsayilan boyut (1024x1024 | 1024x1792 | 1792x1024)
+          quality: standard    # standard veya hd (~2x fiyat)
+          style: vivid         # vivid (canli) veya natural (dogal)
+
+      # --- SES OPSIYONLARI  ---
+      audio:
+        speech:
+          options:
+            model: tts-1-hd     # tts-1 (hizli) veya tts-1-hd (kaliteli)
+            voice: alloy        # alloy, echo, fable, onyx, nova, shimmer
+            speed: 1.0          # 0.25 - 4.0 arasi (Double tipinde — Spring AI 2.0 breaking change)
+        transcription:
+          options:
+            model: whisper-1    # Ses → metin donusumu

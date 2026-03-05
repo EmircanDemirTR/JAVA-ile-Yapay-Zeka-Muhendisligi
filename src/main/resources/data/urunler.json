@@ -1,0 +1,142 @@
+[
+  {
+    "id": 1,
+    "ad": "Java AI Baslangic Paketi",
+    "aciklama": "Spring AI ile temel chatbot uygulamalari icin giris seviyesi egitim seti. ChatClient API kullanimi, prompt sablonlari ve basit soru-cevap senaryolarini kapsar. Yapay zeka dunyasina Java ile ilk adimi atmak isteyenler icin idealdir.",
+    "kategori": "egitim",
+    "fiyat": 149.99
+  },
+  {
+    "id": 2,
+    "ad": "RAG Uygulama Kiti",
+    "aciklama": "Dokuman yukleme, chunking ve retrieval adimlarini hizlandiran yardimci kutuphane. PDF, Markdown ve JSON formatlarini destekler. Uctan uca ETL pipeline kurulumunu kolaylastirir ve vektor deposuna otomatik yazim saglar.",
+    "kategori": "yazilim",
+    "fiyat": 299.99
+  },
+  {
+    "id": 3,
+    "ad": "Token Analiz Paneli",
+    "aciklama": "Prompt token sayisini ve API cagri maliyetlerini gorsellestiren yonetim ekrani. Gunluk, haftalik ve aylik maliyet raporlari uretir. Model bazinda token tuketimini karsilastirmali grafiklerde sunar.",
+    "kategori": "analitik",
+    "fiyat": 199.99
+  },
+  {
+    "id": 4,
+    "ad": "Local Model Baslangic Rehberi",
+    "aciklama": "Ollama ile yerel model kurulumunu adim adim anlatan kapsamli rehber. Llama, Mistral ve DeepSeek modellerinin Windows uzerinde kurulumu, GGUF format donusumu ve performans ayarlarini icerir.",
+    "kategori": "dokuman",
+    "fiyat": 79.99
+  },
+  {
+    "id": 5,
+    "ad": "PgVector Hazir Sema",
+    "aciklama": "PostgreSQL icinde vector store tablolari icin hazir migration seti. Indeks olusturma, HNSW ve IVFFlat algoritmalarinin karsilastirilmasini icerir. Buyuk olcekli vektor aramalari icin optimize edilmis sema tasarimi sunar.",
+    "kategori": "veritabani",
+    "fiyat": 129.99
+  },
+  {
+    "id": 6,
+    "ad": "Chroma Hizli Baslangic",
+    "aciklama": "ChromaDB ile hafif retrieval sistemi kurmaya yonelik ornek proje. Docker Compose ile tek komutla ayaga kaldirilir. Kucuk ve orta olcekli projeler icin ideal olan bu vektor veritabani, hizli prototipleme saglar.",
+    "kategori": "veritabani",
+    "fiyat": 99.99
+  },
+  {
+    "id": 7,
+    "ad": "Prompt Kalite Kontrolu",
+    "aciklama": "Prompt surumlerini karsilastirmak icin degerlendirme kontrol listesi. Zero-shot, few-shot ve chain-of-thought teknikleri arasinda A/B testi yapmaya olanak tanir. Prompt muhendisligi en iyi pratiklerini sistematik olarak uygular.",
+    "kategori": "kalite",
+    "fiyat": 89.99
+  },
+  {
+    "id": 8,
+    "ad": "Embedding Karsilastirma Raporu",
+    "aciklama": "OpenAI ve Ollama embedding modelleri icin ornek benchmark sonuclari. Vektor boyutu, islem suresi ve benzerlik skoru bazinda karsilastirmali analiz sunar. Farkli kullanim senaryolari icin model secim rehberi icerir.",
+    "kategori": "analitik",
+    "fiyat": 159.99
+  },
+  {
+    "id": 9,
+    "ad": "ETL Izleme Sablonu",
+    "aciklama": "Reader, splitter ve writer adimlarini izlemek icin yapilandirilmis log sablonlari. Her ETL adimindan gecen dokuman sayisini, chunk boyutunu ve isleme suresini kaydeder. Hata durumlarinda otomatik alarm mekanizmasi icerir.",
+    "kategori": "operasyon",
+    "fiyat": 119.99
+  },
+  {
+    "id": 10,
+    "ad": "Retriever Optimizasyon Notlari",
+    "aciklama": "topK ve threshold parametreleri icin pratik ayar onerileri. Farkli veri setleri uzerinde parametre grid search sonuclarini icerir. Production ortaminda retrieval kalitesini olcmek icin metrik rehberi sunar.",
+    "kategori": "performans",
+    "fiyat": 109.99
+  },
+  {
+    "id": 11,
+    "ad": "Multimodal AI Starter Kit",
+    "aciklama": "Gorsel analizi, ses isleme ve metin uretimini birlestiren baslangic paketi. OpenAI Vision API ile gorsel tanima, Whisper ile ses transkripsiyonu ve TTS ile konusma sentezi ornekleri icerir.",
+    "kategori": "egitim",
+    "fiyat": 249.99
+  },
+  {
+    "id": 12,
+    "ad": "Function Calling Sablon Seti",
+    "aciklama": "LLM'in dis API'lerle etkilesim kurmasini saglayan hazir tool sablonlari. Hava durumu, doviz kuru, e-posta gonderimi ve veritabani sorgulama gibi yaygin senaryolari kapsar. @Tool annotation kullanim ornekleriyle birlikte gelir.",
+    "kategori": "yazilim",
+    "fiyat": 179.99
+  },
+  {
+    "id": 13,
+    "ad": "Chat Bellegi Yonetim Modulu",
+    "aciklama": "Sohbet gecmisini oturum bazli saklayan ve yoneten hazir modul. InMemory, JDBC ve Redis tabanli bellek stratejilerini destekler. MessageWindowChatMemory ile token limitini asmayi onler.",
+    "kategori": "yazilim",
+    "fiyat": 139.99
+  },
+  {
+    "id": 14,
+    "ad": "AI Guvenlik Tarama Araci",
+    "aciklama": "Prompt injection saldirilarina karsi koruma saglayan guvenlik tarama modulu. Kullanici girdilerini analiz ederek potansiyel tehlikeli prompt'lari tespit eder. SafeGuardAdvisor entegrasyonu ile birlikte kullanilmak uzere tasarlanmistir.",
+    "kategori": "guvenlik",
+    "fiyat": 219.99
+  },
+  {
+    "id": 15,
+    "ad": "Spring AI Test Framework",
+    "aciklama": "AI uygulamalari icin entegrasyon test altyapisi. TestContainers ile izole test ortami olusturur. RelevancyEvaluator ve FactCheckingEvaluator ile model yanitlarinin kalitesini otomatik olarak degerlendirir.",
+    "kategori": "kalite",
+    "fiyat": 189.99
+  },
+  {
+    "id": 16,
+    "ad": "Vektor Indeks Benchmark Araci",
+    "aciklama": "HNSW, IVFFlat ve brute-force arama algoritmalari arasinda performans karsilastirmasi yapan benchmark araci. Farkli veri boyutlarinda sorgu suresi, bellek kullanimi ve isabet oranini olcer.",
+    "kategori": "performans",
+    "fiyat": 169.99
+  },
+  {
+    "id": 17,
+    "ad": "Advisor Zincir Tasarimi Rehberi",
+    "aciklama": "CallAdvisor, StreamAdvisor ve BaseAdvisor kullanarak is akisi tasarlama rehberi. Chain, routing ve parallelization pattern'larini pratik orneklerle gosterir. Orchestrator-workers ve evaluator-optimizer desenlerini kapsar.",
+    "kategori": "dokuman",
+    "fiyat": 129.99
+  },
+  {
+    "id": 18,
+    "ad": "MCP Entegrasyon Paketi",
+    "aciklama": "Model Context Protocol ile dis araclar arasinda standart iletisim kurmak icin entegrasyon paketi. Stdio ve SSE transport yapilari desteklenir. Kendi MCP server'inizi olusturmak icin sablon kod ve yapilandirma dosyalari icerir.",
+    "kategori": "yazilim",
+    "fiyat": 259.99
+  },
+  {
+    "id": 19,
+    "ad": "Turkce Dogal Dil Isleme Veri Seti",
+    "aciklama": "Turkce metin analizi ve sentiment tespiti icin etiketlenmis ornek veri seti. Olumlu, olumsuz ve notr kategorilerinde siniflandirilmis musteri yorumlarini icerir. Embedding kalitesi testi icin referans kaynak olarak kullanilabilir.",
+    "kategori": "veri",
+    "fiyat": 199.99
+  },
+  {
+    "id": 20,
+    "ad": "CI/CD AI Pipeline Sablonu",
+    "aciklama": "GitHub Actions ile AI uygulamalarini test edip deploy etmek icin hazir pipeline sablonu. Docker image build, TestContainers entegrasyon testi ve otomatik deployment adimlarini icerir. Ollama ve pgvector servislerini CI ortaminda calistirir.",
+    "kategori": "operasyon",
+    "fiyat": 149.99
+  }
+]

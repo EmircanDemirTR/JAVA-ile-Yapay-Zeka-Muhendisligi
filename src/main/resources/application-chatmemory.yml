@@ -1,0 +1,34 @@
+spring:
+  autoconfigure:
+    exclude:
+      # --- Ollama (OpenAI odakli profil) ---
+      - org.springframework.ai.model.ollama.autoconfigure.OllamaApiAutoConfiguration
+      - org.springframework.ai.model.ollama.autoconfigure.OllamaChatAutoConfiguration
+      - org.springframework.ai.model.ollama.autoconfigure.OllamaEmbeddingAutoConfiguration
+      # --- Anthropic ---
+      - org.springframework.ai.model.anthropic.autoconfigure.AnthropicChatAutoConfiguration
+      # --- Vector Store (bu profilde RAG kullanilmiyor) ---
+      - org.springframework.ai.vectorstore.pgvector.autoconfigure.PgVectorStoreAutoConfiguration
+      - org.springframework.ai.vectorstore.chroma.autoconfigure.ChromaVectorStoreAutoConfiguration
+      # --- MCP ---
+      - org.springframework.ai.mcp.client.common.autoconfigure.McpClientAutoConfiguration
+      - org.springframework.ai.mcp.server.common.autoconfigure.McpServerAutoConfiguration
+      # NOT: JdbcChatMemoryRepositoryAutoConfiguration bu profilde EXCLUDE EDILMEDI — aktif!
+
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        options:
+          model: gpt-4o
+          temperature: 0.7
+          max-tokens: 2000
+      embedding:
+        options:
+          model: text-embedding-3-small
+
+    chat:
+      memory:
+        repository:
+          jdbc:
+            initialize-schema: always  # Spring AI JDBC Chat Memory tablosunu otomatik olusturur

@@ -1,0 +1,19 @@
+# Maven
+target/
+
+# IntelliJ / IDE
+.idea/
+*.iml
+out/
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+# Course planning files (do not publish)
+3_Java_ile_Yapay_Zeka_Muhendisligi_Spring_AI_RAG_LLM_Index.xlsx

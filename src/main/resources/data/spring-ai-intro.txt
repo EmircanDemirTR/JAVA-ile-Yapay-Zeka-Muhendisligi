@@ -1,0 +1,114 @@
+Spring AI, Java ekosisteminde LLM tabanli uygulamalar gelistirmek icin modern bir cati sunar.
+Bu yapi ile ChatModel, EmbeddingModel ve VectorStore bilesenleri ayni mimaride birlikte kullanilir.
+Ozellikle RAG tabanli projelerde, metni once parcalayip sonra embedding ureterek benzerlik aramasi yapmak temel yaklasimdir.
+Bu dosya, B9 derslerinde ETL pipeline akislarini denemek icin ornek kaynak metindir.
+
+Bir metni dogrudan modele gondermek basit olabilir ama buyuk dokumanlarda maliyet ve gecikme artar.
+Bu nedenle dokumanlar kucuk parcaciklara ayrilir.
+Her parcacik bir vektore donusturulur ve vector store icinde saklanir.
+Sorgu geldiginde, once sorgunun embedding'i uretilir.
+Ardindan en benzer parcalar bulunur ve cevap olusturma asamasina girdi saglanir.
+
+Spring AI'nin avantajlarindan biri, farkli model saglayicilari arasinda soyut bir API sunmasidir.
+Ayni kodla OpenAI veya Ollama gibi saglayicilarla calisabilirsiniz.
+Ayni sekilde VectorStore arayuzu de PgVector, Chroma ve diger depolari ortak bir sozlesme ile sunar.
+Bu sayede altyapi degisimi yaparken uygulama kodu minimum etkilenir.
+
+ChatClient API ve Builder Pattern
+
+ChatClient, Spring AI'nin temel iletisim katmanidir.
+Builder pattern sayesinde system prompt, advisor ve tool tanimlarini tek bir zincirde yapilandirabilirsiniz.
+ChatClient.Builder nesnesi Spring tarafindan otomatik olarak inject edilir.
+defaultSystem() metodu her istekte otomatik eklenen talimat metnini belirler.
+call() metodu senkron istek gonderirken, stream() metodu token token yanit almak icin kullanilir.
+Senkron cagri basit senaryolar icin uygundur ancak uzun yanitlarda kullanici deneyimini olumsuz etkiler.
+Streaming ise parcali yanit saglayarak kullanicinin bekleme suresini azaltir.
+
+Prompt Muhendisligi
+
+PromptTemplate sinifi, degisken icerikli prompt sablonlari olusturmak icin kullanilir.
+Sablonlar icinde {degisken} seklinde placeholder'lar tanimlanir ve calisma zamaninda doldurulur.
+Dosya tabanli sablonlar .st uzantili StringTemplate dosyalarinda saklanir.
+Zero-shot prompting, modele ornek vermeden dogrudan talimat vermektir.
+Few-shot prompting ise birkac ornek vererek modeli yonlendirme teknigdir.
+Chain-of-Thought prompting modelden adim adim dusunmesini isteyerek karmasik problemlerde isabeti arttirir.
+
+Yapilandirilmis Cikti
+
+BeanOutputConverter, modelden gelen serbest metin yanitini Java nesnesine donusturur.
+ListOutputConverter birden fazla ogeyi liste olarak parse ederken, MapOutputConverter anahtar-deger cifti uretir.
+entity() metodu ise tur cikarimini otomatik yaparak tek satirda donusum saglar.
+Nested nesneler ve enum tipleri icin JSON schema kontrolu gerekebilir.
+Yapilandirilmis cikti sayesinde model yanitlari dogrudan uygulama mantigi icinde kullanilabilir.
+
+Embedding ve Vektor Arama
+
+Embedding, bir metni sabit boyutlu sayisal vektore donusturme islemidir.
+Benzer anlamdaki metinler birbirine yakin vektorler uretir.
+OpenAI'nin text-embedding-3-small modeli 1536 boyutlu vektor uretirken, Ollama modelleri genellikle 384-768 boyut kullanir.
+Cosine similarity, iki vektor arasindaki aci benzerligini olcer ve 0 ile 1 arasinda skor doner.
+Skor 1'e ne kadar yakinsa metinler o kadar anlamsal olarak benzerdir.
+Euclidean distance ise vektorler arasi geometrik uzakligi olcer; dusuk mesafe yuksek benzerligi gosterir.
+
+VectorStore ve Depolama
+
+VectorStore arayuzu, embedding vektorlerini depolamak ve sorgulamak icin standart bir sozlesme sunar.
+SimpleVectorStore bellek icinde calisir ve prototipleme icin idealdir ancak uretim ortaminda tercih edilmez.
+PgVector, PostgreSQL uzerine kurulu bir uzanti olarak SQL tabanli vektor aramasini mumkun kilar.
+ChromaDB ise hafif ve hizli bir vektor veritabanidir ve kucuk-orta olcekli projeler icin uygundur.
+Her uc depo da ayni VectorStore arayuzunu implemente eder, bu sayede gecis kolaydir.
+
+ETL Pipeline Sureci
+
+ETL pipeline uc ana adimdan olusur: Read, Transform, Write.
+Reader asamasinda kaynak dokumanlar farkli formatlardan okunur.
+TextReader duz metin, TikaDocumentReader PDF ve Markdown, JsonReader ise JSON formatini destekler.
+Transformer asamasinda dokumanlar parcalara ayrilir.
+TokenTextSplitter, token sayisina gore bolme yaparken, cumle sinirlarini mumkun oldugunca korur.
+Chunk boyutu kuculdukce arama hassasiyeti artar ama baglam kaybi riski olusur.
+Chunk boyutu buyudukce baglam korunur ama alakasiz bilgi de dahil olabilir.
+Overlap parametresi ardisik parcalar arasinda ortak metin birakarak baglam gecislerini yumusatir.
+Writer asamasinda parcalanmis dokumanlar embedding uretilerek VectorStore'a yazilir.
+
+Metadata ve Zenginlestirme
+
+Her Document nesnesinin icerik disinda metadata alani vardir.
+Metadata, kaynak dosya adi, tarih, yazar ve kategori gibi ek bilgiler tasir.
+Arama sirasinda metadata filtresi uygulanarak sonuclar daraltilabilir.
+Ornegin sadece belirli bir kaynaktan gelen dokumanlari aramak icin FilterExpression kullanilir.
+Zengin metadata, retrieval isabetin arttirir ve gereksiz sonuclari eler.
+
+Retriever Parametreleri
+
+topK parametresi donulecek maksimum sonuc sayisini belirler.
+Dusuk topK daha az ama odakli sonuc verirken, yuksek topK daha genis kapsam saglar.
+Similarity threshold ise minimum benzerlik skorunu tanimlar.
+Esik degeri yukseldikce sadece cok benzer sonuclar doner, dusuldukce daha az alakali sonuclar da dahil olur.
+Production ortaminda topK ve threshold birlikte optimize edilmelidir.
+Yanlis konfigurasyonlar ya eksik bilgi ya da gereksiz gurultu ile sonuclanir.
+
+RAG Mimarisi
+
+RAG, Retrieval-Augmented Generation ifadesinin kisaltmasidir.
+Temel fikir, LLM'e soru sormadan once ilgili dokumanlari vector store'dan getirip context olarak eklemektir.
+Bu yaklasim modelin halusinasyon yapma olasiligini azaltir ve guncel bilgiye dayali yanitlar uretmesini saglar.
+QuestionAnswerAdvisor basit RAG senaryolari icin hizli baslangic sunar.
+RetrievalAugmentationAdvisor ise modular yapisiyla gelismis RAG pipeline'lari kurmaya olanak tanir.
+Corrective RAG, Self-RAG ve Adaptive RAG gibi ileri teknikler yanit kalitesini daha da arttirir.
+
+Function Calling ve Tool Entegrasyonu
+
+Function calling, LLM'in dis sistemlerle etkilesim kurmasini saglayan mekanizmadir.
+Model, kullanici sorusuna gore hangi fonksiyonun cagrilmasi gerektigine karar verir.
+@Tool annotation'i ile Java metotlari dogrudan LLM tarafindan cagrilabilir hale gelir.
+ToolContext nesnesi cagri sirasinda ek parametreler tasimak icin kullanilir.
+Dinamik tool yonetimi ise calisma zamaninda tool listesini degistirmeye olanak tanir.
+
+Uretim Ortami Notlari
+
+Uretim ortaminda her zaman izleme, maliyet ve hata yonetimi dusunulmelidir.
+Embedding ve retrieval adimlari performans olarak olculebilir olmali.
+Rate limiting ile API cagri sayisi sinirlandirilarak maliyet kontrol altinda tutulur.
+Circuit breaker pattern'i ise dis servis hatalarinda uygulamayi korur.
+Yanlis konfigurasyonlar erken asamada test edilmelidir.
+B9 boyunca bu bakis acisini koruyarak ilerleyecegiz.

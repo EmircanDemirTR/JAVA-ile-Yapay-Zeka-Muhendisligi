@@ -1,0 +1,42 @@
+# Birden fazla saglayicinin ayni anda aktif olmasi gereken dersler
+# Onemli: OpenAI ve Ollama AKTIF, Anthropic EXCLUDE edilir.
+
+spring:
+  autoconfigure:
+    exclude:
+      # --- Anthropic  ---
+      - org.springframework.ai.model.anthropic.autoconfigure.AnthropicChatAutoConfiguration
+      # --- Veritabani  ---
+      - org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration
+      - org.springframework.boot.hibernate.autoconfigure.HibernateJpaAutoConfiguration
+      # --- Vector Store  ---
+      - org.springframework.ai.vectorstore.pgvector.autoconfigure.PgVectorStoreAutoConfiguration
+      - org.springframework.ai.vectorstore.chroma.autoconfigure.ChromaVectorStoreAutoConfiguration
+      # --- Chat Memory JDBC (B12'ye kadar gerekmiyor) ---
+      - org.springframework.ai.model.chat.memory.repository.jdbc.autoconfigure.JdbcChatMemoryRepositoryAutoConfiguration
+
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      embedding:
+        options:
+          model: text-embedding-3-small
+      chat:
+        options:
+          model: gpt-4o
+          temperature: 0.7
+          max-tokens: 2000
+
+    ollama:
+      base-url: http://localhost:11434
+      embedding:
+        options:
+          model: nomic-embed-text
+      init:
+        pull-model-strategy: never # Boylece Ollama calismiyorsa bile uygulama ayaga kalkar.
+        timeout: 5s
+      chat:
+        options:
+          model: qwen3:4b
+          temperature: 0.7
+          num-predict: 2048

@@ -1,0 +1,86 @@
+Yapay Zeka Terimler Sozlugu
+
+Bu sozluk, yapay zeka ve makine ogrenmesi alaninda sik kullanilan terimleri aciklamaktadir.
+Her terim kisa tanim ve kullanim baglamiyla birlikte sunulmustur.
+
+Yapay Zeka (AI): Makinelerin insan benzeri dusunme, ogrenme ve karar verme yetenegi kazanmasidir.
+Dar yapay zeka belirli gorevlerde uzmanlasmis sistemleri tanimlarken, genel yapay zeka henuz arastirma asamasindadir.
+
+Makine Ogrenmesi (ML): Sistemlerin acikca programlanmadan veriden ogrenme yetenegidir.
+Gozetimli ogrenme etiketli veriyle, goztimsiz ogrenme etiketsiz veriyle, pekistirmeli ogrenme odul-ceza mekanizmasiyla calisir.
+
+Derin Ogrenme (Deep Learning): Cok katmanli yapay sinir aglari kullanarak karmasik oruntuleri ogrenmektir.
+Goruntu tanima, dogal dil isleme ve ses sentezi gibi alanlarda buyuk basarilar elde edilmistir.
+
+Buyuk Dil Modeli (LLM): Milyarlarca parametre ile egitilmis, metin uretme ve anlama kapasitesine sahip modellerdir.
+GPT, Claude, Llama ve Mistral bu kategorideki onemli model aileleridir.
+LLM'ler transfer learning sayesinde genel bilgiyi ozel alanlara uyarlayabilir.
+
+Token: Metin islemede kullanilan en kucuk birimdir.
+Bir kelime genellikle 1-3 token'a karsilik gelir, Turkce gibi eklenmeli dillerde bu oran daha yuksek olabilir.
+Token sayisi hem maliyet hem de context window siniri acisindan kritik bir metriktir.
+
+Context Window: Modelin tek seferde isleyebildigi maksimum token sayisidir.
+GPT-4 Turbo 128K, Claude 3 ise 200K token context window sunar.
+Buyuk context window uzun dokumanlari isleyebilme avantaji saglar ancak maliyet ve gecikme artar.
+
+Embedding: Metin, gorsel veya ses gibi verileri sabit boyutlu sayisal vektorlere donusturme islemidir.
+Benzer anlamdaki iceriklerin vektorleri geometrik olarak birbirine yakin olur.
+Embedding modelleri ozel olarak bu donusum gorevi icin egitilmistir.
+
+Vektor Veritabani: Yuksek boyutlu vektorleri depolamak ve hizli benzerlik aramasi yapmak icin optimize edilmis veritabanidir.
+PgVector, Chroma, Pinecone, Weaviate ve Milvus populer vektor veritabanlari arasindadir.
+Indeksleme algoritmalari (HNSW, IVFFlat) arama hizini onemli olcude etkiler.
+
+RAG (Retrieval-Augmented Generation): Bilgi erisimi ile metin uretimini birlestiren yaklasimdir.
+Modele soru sormadan once ilgili dokumanlar vektor deposundan getirilir ve context olarak eklenir.
+Bu teknik halusinasyonu azaltir ve modelin guncel bilgiye dayali yanit uretmesini saglar.
+
+Halusinasyon: Modelin gercekte var olmayan bilgileri uydurarak gercekmiş gibi sunmasidir.
+RAG, fine-tuning ve fact-checking mekanizmalari halusinasyonu azaltmak icin kullanilir.
+Ozellikle tibbi, hukuki ve finansal alanlarda halusinasyon ciddi sonuclara yol acabilir.
+
+Temperature: Model yanitlarinin rasgeleligini kontrol eden parametredir.
+Dusuk temperature (0.1-0.3) daha tutarli ve onceden tahmin edilebilir yanitlar uretir.
+Yuksek temperature (0.7-1.0) ise daha yaratici ama daha az tahmin edilebilir yanitlar olusturur.
+Teknik sorularda dusuk, yaratici yazimda yuksek temperature tercih edilir.
+
+Top-P (Nucleus Sampling): Token seciminde kumulatif olasilik esigini belirleyen parametredir.
+Top-P 0.9 ise model, toplam olasiligi yuzde 90'a ulasan en olasi token'lar arasindan secer.
+Temperature ile birlikte kullanildiginda yanit cesitliligini ince ayar yapma imkani saglar.
+
+Fine-Tuning: Onceden egitilmis bir modeli belirli bir gorev veya alan icin ek veriyle yeniden egitmektir.
+Domain-specific bilgi kazandirmak veya model davranisini ozellistirmek icin kullanilir.
+LoRA ve QLoRA gibi teknikler fine-tuning maliyetini onemli olcude dusurmustur.
+
+Prompt Muhendisligi: Modelden istenen ciktiyi almak icin girdi metnini optimize etme sanatıdir.
+Zero-shot hicbir ornek vermeden, few-shot birkac ornek vererek, chain-of-thought ise adim adim dusundurerek sonuc alinir.
+Iyi tasarlanmis bir prompt, model performansini dramatik olcude iyilestirebilir.
+
+Function Calling: LLM'in dis sistemlerle etkilesim kurmasini saglayan mekanizmadir.
+Model, kullanici sorusuna gore hangi fonksiyonun cagrilmasi gerektigine karar verir.
+Sonuc modele geri dondurulerek kullaniciya anlamli bir yanit olusturulur.
+
+Agent: Otonom karar verebilen, arac kullanan ve karmasik gorevleri adim adim cozen yapay zeka sistemidir.
+ReAct pattern'i ile model dusunme, eylem ve gozlem dongusunu tekrarlar.
+Agentic RAG, retrieval islemini agent karar mekanizmasiyla birlestiren ileri bir tekniktir.
+
+Transformer Mimarisi: Attention mekanizmasini kullanan ve paralel islem yapabilen sinir agi mimarisidir.
+Self-attention her token'in diger token'larla iliskisini hesaplayarak baglam anlayisini guclendirır.
+BERT, GPT ve T5 gibi modern dil modelleri transformer mimarisi uzerine kuruludur.
+
+Tokenizer: Metni token'lara ayiran on islem bilesenidir.
+BPE (Byte Pair Encoding), WordPiece ve SentencePiece yaygin tokenizasyon algoritmalaridir.
+Farkli modeller farkli tokenizer kullanir, bu nedenle ayni metnin token sayisi modelden modele degisir.
+
+Inference: Egitilmis modelin yeni veriler uzerinde tahmin yapma islemidir.
+Inference suresi, model boyutu ve donanim kapasitesine baglidir.
+Yerel inference GPU gerektirir ve bulut inference'a gore daha dusuk gecikme saglar.
+
+GGUF: Yerel model calistirma icin optimize edilmis dosya formatidir.
+Quantization ile model boyutu kucultulerek daha az bellek ve islem gucu ile calistirilabilir.
+Ollama bu formati dogrudan destekler ve yerel model deploy surecini kolaylastirir.
+
+Guardrails: Model ciktisini sinirlamak ve guvenlik saglamak icin uygulanan kurallardir.
+Prompt injection, jailbreak ve zararli icerik uretimini onlemek amacıyla kullanilir.
+SafeGuardAdvisor Spring AI'da bu gorevi ustlenen bilesendir.

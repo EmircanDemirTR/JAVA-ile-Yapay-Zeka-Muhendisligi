@@ -1,0 +1,8 @@
+global:
+  scrape_interval: 15s      # Her 15 saniyede bir metrik topla
+
+scrape_configs:
+  - job_name: 'spring-ai'
+    metrics_path: '/actuator/prometheus'    # Spring Boot Actuator Prometheus endpoint'i
+    static_configs:
+      - targets: ['host.docker.internal:8080']   # Docker icerisinden host makineye erisim

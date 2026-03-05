@@ -1,0 +1,48 @@
+spring:
+  # ==================================================================
+  # AUTO-CONFIGURATION EXCLUSION (Profil bazli)
+  # ==================================================================
+  # Sadece Ollama aktif — OpenAI ve Anthropic ChatModel bean'i olusturulmaz.
+  # DB/VectorStore/ChatMemory → B9-B12'ye kadar gerekmiyor.
+  autoconfigure:
+    exclude:
+      # --- OpenAI (TUM auto-config'ler — API key olmadan crash olur) ---
+      - org.springframework.ai.model.openai.autoconfigure.OpenAiChatAutoConfiguration
+      - org.springframework.ai.model.openai.autoconfigure.OpenAiEmbeddingAutoConfiguration
+      - org.springframework.ai.model.openai.autoconfigure.OpenAiAudioSpeechAutoConfiguration
+      - org.springframework.ai.model.openai.autoconfigure.OpenAiAudioTranscriptionAutoConfiguration
+      - org.springframework.ai.model.openai.autoconfigure.OpenAiImageAutoConfiguration
+      - org.springframework.ai.model.openai.autoconfigure.OpenAiModerationAutoConfiguration
+      # --- Anthropic (TUM auto-config'ler) ---
+      - org.springframework.ai.model.anthropic.autoconfigure.AnthropicChatAutoConfiguration
+      # --- Vector Store (B9'a kadar gerekmiyor) ---
+      - org.springframework.ai.vectorstore.pgvector.autoconfigure.PgVectorStoreAutoConfiguration
+      - org.springframework.ai.vectorstore.chroma.autoconfigure.ChromaVectorStoreAutoConfiguration
+      # --- Chat Memory JDBC (B12'ye kadar gerekmiyor) ---
+      - org.springframework.ai.model.chat.memory.repository.jdbc.autoconfigure.JdbcChatMemoryRepositoryAutoConfiguration
+
+
+  ai:
+    ollama:
+      base-url: http://localhost:11434
+      embedding:
+        options:
+          model: nomic-embed-text
+
+      init:
+        pull-model-strategy: when_missing
+        timeout: 5m
+
+      chat:
+        options:
+          model: qwen3:4b
+          temperature: 0.7
+          num-predict: 2048
+          num-ctx: 4096
+          num-gpu: 99
+
+
+# OLLAMA-OZEL LOGLAMA
+logging:
+  level:
+    org.springframework.ai.ollama: DEBUG

@@ -1,0 +1,131 @@
+# ====================================================================
+# Docker Compose - Spring AI Gelistirme Ortami
+# ====================================================================
+# Bu dosya, kursun geri kalaninda kullanilacak veritabani servislerini tanimlar.
+# Kullanim: docker compose up -d
+# Durdurma: docker compose down
+# ====================================================================
+
+services:
+
+  # ==================================================================
+  # POSTGRESQL + PGVECTOR
+  # ==================================================================
+  # Neden pgvector? → PostgreSQL'in vektor arama yetenegi kazanmis hali
+  # Spring AI'nin PgVectorStore implementasyonu bu veritabanini kullanir
+  # Bolum 9'da embedding'leri burada depolayacagiz
+  # Bolum 10-11'de RAG sorgulari bu veritabanindan veri cekecek
+  postgres:
+    image: pgvector/pgvector:pg17                   # pgvector extension'i iceren PostgreSQL 17 imaji
+    # NOT: Standart 'postgres' imaji pgvector icermez!
+    container_name: spring-ai-postgres               # Container'a sabit isim veriyoruz (log ve erisim kolayligi)
+    environment:
+      POSTGRES_DB: vectordb                          # Otomatik olusturulacak veritabani adi
+      POSTGRES_USER: postgres                        # Veritabani kullanici adi
+      POSTGRES_PASSWORD: postgres                    # Veritabani sifresi (SADECE gelistirme icin!)
+    ports:
+      - "5432:5432"                                  # host_portu:container_portu
+      # Makinenizdeki 5432 → container icindeki 5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data              # Named volume: container silinse de veri korunur
+    healthcheck: # Container saglik kontrolu
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]  # PostgreSQL'in hazir olup olmadigini kontrol eder
+      interval: 10s                                  # Her 10 saniyede bir kontrol
+      timeout: 5s                                    # 5 saniye icerisinde yanit beklenir
+      retries: 5                                     # 5 basarisiz denemeden sonra "unhealthy" olarak isaretlenir
+    restart: unless-stopped                          # Container cokerse otomatik yeniden baslar
+    # (manuel durdurma haric)
+
+  # ==================================================================
+  # CHROMADB
+  # ==================================================================
+  # Neden ChromaDB? → Sadece vektor aramasi icin tasarlanmis, hafif ve hizli
+  # REST API uzerinden calisir — dil bagimsiz
+  # Spring AI'nin ChromaVectorStore implementasyonu bunu kullanir
+  # Baslangic icin pgvector'den daha kolay kurulum
+  chroma:
+    image: chromadb/chroma:0.6.3                     # ChromaDB'nin stabil surumu
+    # 'latest' yerine sabit surum kullaniyoruz (tekrarlanabilirlik)
+    container_name: spring-ai-chroma                 # Container'a sabit isim
+    environment:
+      ANONYMIZED_TELEMETRY: "false"                  # Telemetri verisi gonderimini kapatiyoruz
+      IS_PERSISTENT: "true"                          # Verilerin diske yazilmasini sagliyoruz
+    ports:
+      - "8000:8000"                                  # ChromaDB REST API portu
+    volumes:
+      - chromadata:/chroma/chroma                    # Vektor verilerinin kaliciligi
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat" ]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+  # ==================================================================
+  # REDIS STACK
+  # ==================================================================
+  # Neden Redis Stack? → Redis + RediSearch + RedisJSON modulleri
+  # RediSearch modulu vektor arama yetenegini saglar
+  # Ayni zamanda cache olarak da kullanilabilir (B15'te gorecegiz)
+  # Redis Insight web arayuzu ile gorsel yonetim
+  redis:
+    image: redis/redis-stack:7.4.0-v2                # Redis Stack: Redis + Moduller (RediSearch, RedisJSON)
+    # Standart 'redis' imaji vektor arama icermez!
+    container_name: spring-ai-redis                  # Container'a sabit isim
+    environment:
+      REDIS_ARGS: "--requirepass redis123"            # Redis sifresi (SADECE gelistirme icin!)
+    ports:
+      - "6379:6379"                                  # Redis sunucu portu
+      - "8001:8001"                                  # Redis Insight web arayuzu portu
+    volumes:
+      - redisdata:/data                              # Redis veri kaliciligi
+    healthcheck:
+      test: [ "CMD", "redis-cli", "-a", "redis123", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+
+  # PROMETHEUS (B15.5 — Observability)
+  # ==================================================================
+  prometheus:
+    image: prom/prometheus:v3.2.1                    # Prometheus stabil surumu
+    container_name: spring-ai-prometheus             # Container'a sabit isim
+    ports:
+      - "9090:9090"                                  # Prometheus web UI portu
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml  # Scrape konfigurasyonu
+      - prometheusdata:/prometheus                   # Metrik verilerinin kaliciligi
+    healthcheck:
+      test: [ "CMD", "wget", "--spider", "-q", "http://localhost:9090/-/ready" ]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+
+  # GRAFANA
+  # Varsayilan giris: admin/admin
+  grafana:
+    image: grafana/grafana:11.5.2                    # Grafana stabil surumu
+    container_name: spring-ai-grafana                # Container'a sabit isim
+    ports:
+      - "3000:3000"                                  # Grafana web UI portu
+    environment:
+      GF_SECURITY_ADMIN_USER: admin                  # Varsayilan kullanici (SADECE gelistirme icin!)
+      GF_SECURITY_ADMIN_PASSWORD: admin              # Varsayilan sifre (SADECE gelistirme icin!)
+    volumes:
+      - grafanadata:/var/lib/grafana                 # Dashboard ve veri kaliciligi
+    depends_on:
+      - prometheus                                   # Prometheus hazir olmalI
+    restart: unless-stopped
+
+
+
+volumes:
+  pgdata:                   # PostgreSQL verileri
+  chromadata:               # ChromaDB vektor verileri
+  redisdata:                # Redis verileri
+  prometheusdata:           # Prometheus metrik verileri
+  grafanadata:              # Grafana dashboard verileri
