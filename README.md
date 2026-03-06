@@ -2,6 +2,8 @@
 
 Bu repo, **Udemy** için hazırlanan Java ile Yapay Zeka Mühendisliği eğitiminin bölüm bazlı uygulama kodlarını içerir.
 
+> Kursa hemen katılmak için: [Udemy kurs sayfası](https://www.udemy.com/course/java-ile-yapay-zeka-muhendisligi/) | [İndirimli kayıt linki (`JAVAYAPAYZEKA`)](https://www.udemy.com/course/java-ile-yapay-zeka-muhendisligi/?couponCode=JAVAYAPAYZEKA)
+
 
 ## Eğitim Hakkında
 
@@ -176,9 +178,10 @@ Aşağıdaki bölüm ve ders listesi, paylaşılan indeks dosyasına göre günc
 
 ## Kaynak
 
-## Eğitim Linki
+## Eğitim Linkleri
 
-- [Udemy - Java ile Yapay Zeka Mühendisliği](https://www.udemy.com/course/Java-ile-Yapay-Zeka-Muhendisligi/)
+- [Udemy kurs sayfası](https://www.udemy.com/course/java-ile-yapay-zeka-muhendisligi/)
+- [İndirimli kayıt linki (`JAVAYAPAYZEKA`)](https://www.udemy.com/course/java-ile-yapay-zeka-muhendisligi/?couponCode=JAVAYAPAYZEKA)
 
 ## Lisans
 
